@@ -1,5 +1,7 @@
+export * from './molecules/form/sign-in-form'
 export * from './molecules/form/sign-up-form'
 export * from './organism/section/login-section'
+export * from './organism/section/register-section'
 export * from './ui/button'
 export * from './ui/input'
 export * from './ui/label'
