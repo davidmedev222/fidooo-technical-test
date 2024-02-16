@@ -1,12 +1,7 @@
-import { Routes } from '@/utils'
-import Link from 'next/link'
+import { RegisterSection } from '@/components'
 
 function RegisterPage() {
-  return (
-    <section>
-      <Link href={Routes.Login}>Login Page</Link>
-    </section>
-  )
+  return <RegisterSection />
 }
 
 export default RegisterPage
