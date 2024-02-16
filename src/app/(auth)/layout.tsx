@@ -4,11 +4,8 @@ interface AuthLayoutProps {
 
 function AuthLayout({ children }: AuthLayoutProps) {
   return (
-    <main>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam, animi voluptatem. Quia, repudiandae eum
-        aliquam cumque eaque nesciunt perferendis ad deleniti sit delectus soluta expedita odio non unde dignissimos a?
-      </p>
+    <main className='grid min-h-screen items-center lg:grid-cols-2'>
+      <div className='hidden size-full bg-blue-500 lg:block' />
       {children}
     </main>
   )
