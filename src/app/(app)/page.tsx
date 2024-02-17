@@ -1,14 +1,13 @@
-import { ChatHeader, ChatSection, Separator } from '@/components'
+import { ChatHeader, ChatPreviewList, NewChatModal, Separator } from '@/components'
 
 function ChatPage() {
   return (
-    <>
+    <main>
       <ChatHeader />
-      <main>
-        <Separator />
-        <ChatSection />
-      </main>
-    </>
+      <Separator />
+      <ChatPreviewList />
+      <NewChatModal />
+    </main>
   )
 }
 

@@ -6,6 +6,9 @@ const config = {
   prefix: '',
   theme: {
     extend: {
+      gridTemplateRows: {
+        'chat-detail': 'auto auto 1fr auto'
+      },
       keyframes: {
         'accordion-down': {
           from: { height: '0' },
