@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/indent */
 'use client'
+/* eslint-disable @typescript-eslint/indent */
 import { cn } from '@/utils/function/tailwind.function'
 import * as AvatarPrimitive from '@radix-ui/react-avatar'
 import { forwardRef } from 'react'

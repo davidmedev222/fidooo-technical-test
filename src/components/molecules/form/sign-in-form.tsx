@@ -1,19 +1,40 @@
 'use client'
-import { Button, Form, FormControl, FormField, FormItem, FormLabel, FormMessage, Input, Separator } from '@/components'
-import { Routes, credentialFormSchema } from '@/utils'
+import {
+  Button,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  Input,
+  Separator,
+  SocialMediaAuth
+} from '@/components'
+import { auth } from '@/services'
+import { Routes, credentialSchema } from '@/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { RotateCcwIcon } from 'lucide-react'
 import Link from 'next/link'
+import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 function SignInForm() {
-  const form = useForm<z.infer<typeof credentialFormSchema>>({
-    resolver: zodResolver(credentialFormSchema),
+  const form = useForm<z.infer<typeof credentialSchema>>({
+    resolver: zodResolver(credentialSchema),
     defaultValues: { email: '', password: '' }
   })
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [signInWithEmailAndPassword, user, loading, error] = useSignInWithEmailAndPassword(auth)
 
-  const onSubmit = (values: z.infer<typeof credentialFormSchema>) => {
-    console.log(values)
+  const onSubmit = async (values: z.infer<typeof credentialSchema>) => {
+    try {
+      const user = await signInWithEmailAndPassword(values.email, values.password)
+      user && console.log(user)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
@@ -49,20 +70,23 @@ function SignInForm() {
           <Link className='text-right text-sm font-medium underline' href={Routes.ForgotPassword}>
             ¿Olvidaste tu contraseña?
           </Link>
-          <Button type='submit'>Iniciar sesión</Button>
+          {!loading && <Button type='submit'>Iniciar sesión</Button>}
+          {loading && (
+            <Button disabled>
+              <RotateCcwIcon className='animate-spin' />
+            </Button>
+          )}
         </form>
       </Form>
+      {error && <p className='text-sm font-medium text-red-500'>{error.message}</p>}
       <Separator />
-      <div className='grid gap-y-4'>
-        <Button variant='outline'>Iniciar sesión con Google</Button>
-        <Button variant='outline'>Iniciar sesión con GitHub</Button>
-        <p className='text-center text-sm'>
-          No tienes una cuenta?{' '}
-          <Link className='font-medium underline' href={Routes.Register}>
-            Crea una cuenta
-          </Link>
-        </p>
-      </div>
+      <SocialMediaAuth />
+      <p className='text-center text-sm'>
+        No tienes una cuenta?{' '}
+        <Link className='font-medium underline' href={Routes.Register}>
+          Crea una cuenta
+        </Link>
+      </p>
     </div>
   )
 }
