@@ -1,21 +1,54 @@
-import { Button, Input, Label, Separator } from '@/components'
-import { Routes } from '@/utils'
+'use client'
+import { Button, Form, FormControl, FormField, FormItem, FormLabel, FormMessage, Input, Separator } from '@/components'
+import { Routes, credentialFormSchema } from '@/utils'
+import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 
 function SignUpForm() {
+  const form = useForm<z.infer<typeof credentialFormSchema>>({
+    resolver: zodResolver(credentialFormSchema),
+    defaultValues: { email: '', password: '' }
+  })
+
+  const onSubmit = (values: z.infer<typeof credentialFormSchema>) => {
+    console.log(values)
+  }
+
   return (
     <div className='mx-auto grid w-full max-w-md gap-y-4'>
-      <form className='grid gap-y-4'>
-        <div className='grid gap-y-2'>
-          <Label htmlFor='email'>Correo electrónico</Label>
-          <Input id='email' type='email' placeholder='johndoe@gmail.com' />
-        </div>
-        <div className='grid gap-y-2'>
-          <Label htmlFor='password'>Contraseña</Label>
-          <Input id='password' type='password' placeholder='***********' />
-        </div>
-        <Button type='submit'>Crear cuenta</Button>
-      </form>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className='grid gap-y-4'>
+          <FormField
+            control={form.control}
+            name='email'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Correo electrónico</FormLabel>
+                <FormControl>
+                  <Input placeholder='johndoe@gmail.com' {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='password'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Contraseña</FormLabel>
+                <FormControl>
+                  <Input type='password' placeholder='*********' {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button type='submit'>Crear cuenta</Button>
+        </form>
+      </Form>
       <Separator />
       <div className='grid gap-y-4'>
         <Button variant='outline'>Iniciar sesión con Google</Button>
