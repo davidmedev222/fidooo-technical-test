@@ -11,12 +11,13 @@ import {
   Separator,
   SocialMediaAuth
 } from '@/components'
-import { auth } from '@/services'
+import { User } from '@/models'
+import { auth, createUser } from '@/services'
 import { Routes, signUpSchema } from '@/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { RotateCcwIcon } from 'lucide-react'
 import Link from 'next/link'
-import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth'
+import { useCreateUserWithEmailAndPassword, useUpdateProfile } from 'react-firebase-hooks/auth'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -27,13 +28,29 @@ function SignUpForm() {
   })
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [createUserWithEmailAndPassword, user, loading, error] = useCreateUserWithEmailAndPassword(auth)
+  const [updateProfile] = useUpdateProfile(auth)
 
-  const onSubmit = async (values: z.infer<typeof signUpSchema>) => {
+  const onSubmit = async ({ username, email, password }: z.infer<typeof signUpSchema>) => {
     try {
-      const user = await createUserWithEmailAndPassword(values.email, values.password)
-      user && console.log(user)
+      const userCredentials = await createUserWithEmailAndPassword(email, password)
+      if (!userCredentials) throw new Error('Ocurrió un error al crear usuario.')
+
+      await updateProfile({
+        displayName: username,
+        photoURL:
+          'https://res.cloudinary.com/dos3i5jqy/image/upload/v1708216377/pruebas/fidooo-technical-test/user-avatar_icj0nv.jpg'
+      })
+
+      const newUser: User = {
+        id: userCredentials.user.uid,
+        displayName: username,
+        photoURL:
+          'https://res.cloudinary.com/dos3i5jqy/image/upload/v1708216377/pruebas/fidooo-technical-test/user-avatar_icj0nv.jpg',
+        email
+      }
+      await createUser(newUser)
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
 

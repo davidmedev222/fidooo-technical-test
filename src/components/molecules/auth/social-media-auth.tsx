@@ -1,7 +1,8 @@
 'use client'
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Button } from '@/components'
-import { auth } from '@/services'
+import { User } from '@/models'
+import { auth, createUser, getUserByID } from '@/services'
 import { useSignInWithGithub, useSignInWithGoogle } from 'react-firebase-hooks/auth'
 
 function SocialMediaAuth() {
@@ -10,17 +11,43 @@ function SocialMediaAuth() {
 
   const handleSignInWithGithub = async () => {
     try {
-      const user = await signInWithGithub()
-      user && console.log(user)
+      const userCredentials = await signInWithGithub()
+      if (!userCredentials) throw new Error('Ocurrio un error al iniciar sesión con Github.')
+
+      const existUser = await getUserByID(userCredentials.user.uid)
+      if (existUser) return
+
+      const newUser: User = {
+        id: userCredentials.user.uid,
+        displayName: userCredentials.user.displayName ?? 'John Doe',
+        email: userCredentials.user.email ?? 'johndoe@gmail.com',
+        photoURL:
+          userCredentials.user.photoURL ??
+          'https://res.cloudinary.com/dos3i5jqy/image/upload/v1708216377/pruebas/fidooo-technical-test/user-avatar_icj0nv.jpg'
+      }
+      await createUser(newUser)
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
 
   const handleSignInWithGoogle = async () => {
     try {
-      const user = await signInWithGoogle()
-      user && console.log(user)
+      const userCredentials = await signInWithGoogle()
+      if (!userCredentials) throw new Error('Ocurrio un error al iniciar sesión con Google.')
+
+      const existUser = await getUserByID(userCredentials.user.uid)
+      if (existUser) return
+
+      const newUser: User = {
+        id: userCredentials.user.uid,
+        displayName: userCredentials.user.displayName ?? 'John Doe',
+        email: userCredentials.user.email ?? 'johndoe@gmail.com',
+        photoURL:
+          userCredentials.user.photoURL ??
+          'https://res.cloudinary.com/dos3i5jqy/image/upload/v1708216377/pruebas/fidooo-technical-test/user-avatar_icj0nv.jpg'
+      }
+      await createUser(newUser)
     } catch (error) {
       console.log(error)
     }

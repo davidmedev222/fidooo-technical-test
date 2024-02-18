@@ -30,10 +30,9 @@ function SignInForm() {
 
   const onSubmit = async (values: z.infer<typeof credentialSchema>) => {
     try {
-      const user = await signInWithEmailAndPassword(values.email, values.password)
-      user && console.log(user)
+      await signInWithEmailAndPassword(values.email, values.password)
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
 
