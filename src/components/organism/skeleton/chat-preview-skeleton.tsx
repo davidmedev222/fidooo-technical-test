@@ -1,6 +1,9 @@
 import { Skeleton } from '@/components'
 
 interface ChatPreviewSkeletonProps {
+  /**
+   * El número de esqueletos de chats a mostrar.
+   */
   numberOfChats?: number
 }
 

@@ -7,11 +7,13 @@ import { redirect } from 'next/navigation'
 import { useAuthState } from 'react-firebase-hooks/auth'
 
 interface AuthLayoutProps {
+  /** Los componentes hijo que se renderizarán dentro del diseño. */
   children: React.ReactNode
 }
 
 function AuthLayout({ children }: AuthLayoutProps) {
   const [user, loading] = useAuthState(auth)
+
   if (loading) return <ProcessLoader />
   if (user) redirect(Routes.Home)
 

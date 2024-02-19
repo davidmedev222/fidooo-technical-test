@@ -8,11 +8,15 @@ function ChatHeader() {
   const [user] = useAuthState(auth)
   const [signOut, loading] = useSignOut(auth)
 
+  /**
+   * Una función para gestionar el proceso de cierre de sesión.
+   * @return Una promesa que se resuelve una vez finalizado el proceso de cierre de sesión.
+   */
   const handleSignOut = async () => {
     try {
       await signOut()
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
 

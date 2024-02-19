@@ -21,6 +21,12 @@ function UserPreviewList() {
   if (loading) return <UserPreviewSkeleton numberOfUsers={6} />
   if (error) return <p className='text-center text-gray-500'>{error.message}</p>
 
+  /**
+   * Una función para gestionar el proceso de creación de una nueva conversación.
+   *
+   * @param user - Objeto que representa el usuario al que se creará la conversación.
+   * @return Una promesa que se resuelve una vez finalizado el proceso de creación de la conversación.
+   */
   const handleCreateNewChat = async (user: User) => {
     try {
       setIsCreatingAChat(true)

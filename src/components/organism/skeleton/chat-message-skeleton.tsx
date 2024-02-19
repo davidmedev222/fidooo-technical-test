@@ -1,6 +1,9 @@
 import { Skeleton } from '@/components'
 
 interface ChatMessageSkeletonProps {
+  /**
+   * El número de esqueletos de mensajes a mostrar.
+   */
   numberOfMessages: number
 }
 

@@ -1,6 +1,9 @@
 import { Skeleton } from '@/components'
 
 interface UserPreviewSkeletonProps {
+  /**
+   * El número de esqueletos de usuarios a mostrar.
+   */
   numberOfUsers?: number
 }
 

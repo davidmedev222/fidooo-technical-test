@@ -2,6 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components'
 import { User } from '@/models'
 
 interface UserPreviewProps {
+  /** Objeto que representa el usuario  */
   user: User
 }
 
