@@ -2,6 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Conversation } from '@/models'
 
 interface ChatPreviewProps {
+  /** Objeto que representa la conversación en el chat */
   conversation: Conversation
 }
 

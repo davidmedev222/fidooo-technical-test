@@ -9,6 +9,11 @@ function SocialMediaAuth() {
   const [signInWithGithub, userGithub, loadingGithub, errorGithub] = useSignInWithGithub(auth)
   const [signInWithGoogle, userGoogle, loadingGoogle, errorGoogle] = useSignInWithGoogle(auth)
 
+  /**
+   * Gestiona el inicio de sesión con Github, creando un nuevo usuario si no existe en la base de datos.
+   *
+   * @return Una Promesa que se resuelve cuando la función se completa con éxito.
+   */
   const handleSignInWithGithub = async () => {
     try {
       const userCredentials = await signInWithGithub()
@@ -31,6 +36,11 @@ function SocialMediaAuth() {
     }
   }
 
+  /**
+   * Gestiona el inicio de sesión con Google, creando un nuevo usuario si no existe en la base de datos.
+   *
+   * @return Una Promesa que se resuelve cuando la función se completa con éxito.
+   */
   const handleSignInWithGoogle = async () => {
     try {
       const userCredentials = await signInWithGoogle()
@@ -49,7 +59,7 @@ function SocialMediaAuth() {
       }
       await createUser(newUser)
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
 

@@ -30,6 +30,12 @@ function SignUpForm() {
   const [createUserWithEmailAndPassword, user, loading, error] = useCreateUserWithEmailAndPassword(auth)
   const [updateProfile] = useUpdateProfile(auth)
 
+  /**
+   * Una función para gestionar el envío del formulario de registro del usuario.
+   *
+   * @param values - Objeto que representa la información del usuario a registrar.
+   * @return Una promesa que se resuelve una vez finalizado el proceso de registro.
+   */
   const onSubmit = async ({ username, email, password }: z.infer<typeof signUpSchema>) => {
     try {
       const userCredentials = await createUserWithEmailAndPassword(email, password)

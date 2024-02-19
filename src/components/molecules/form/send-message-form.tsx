@@ -20,6 +20,12 @@ function SendMessageForm() {
     defaultValues: { message: '' }
   })
 
+  /**
+   * Una función que manera el envío del formulario para enviar un mensaje a la conversación.
+   *
+   * @param message - Objeto que representa el mensaje a enviar.
+   * @return Una promesa que se resuelve cuando el mensaje se envia correctamente.
+   */
   const onSubmit = async ({ message }: z.infer<typeof sendMessageSchema>) => {
     try {
       if (!currentUser) throw new Error('No hay un usuario autenticado.')

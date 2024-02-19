@@ -28,6 +28,12 @@ function SignInForm() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [signInWithEmailAndPassword, user, loading, error] = useSignInWithEmailAndPassword(auth)
 
+  /**
+   * Una función que maneja el envío del formulario al iniciar sesión con el correo electrónico y contraseña proporcionados.
+   *
+   * @param values - Los valores obtenidos del envío del formulario.
+   * @return Una promesa que se resuelve una vez finalizado el proceso de inicio de sesión.
+   */
   const onSubmit = async (values: z.infer<typeof credentialSchema>) => {
     try {
       await signInWithEmailAndPassword(values.email, values.password)

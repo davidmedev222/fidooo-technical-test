@@ -16,12 +16,18 @@ function ForgotPasswordForm() {
   })
   const [sendPasswordResetEmail, sending, error] = useSendPasswordResetEmail(auth)
 
-  const onSubmit = async (values: z.infer<typeof forgotPasswordSchema>) => {
+  /**
+   * Una función que maneja el envío del formulario para enviar el correo electrónico para restablecer la contraseña.
+   *
+   * @param email - El correo electrónico para restablecer la contraseña
+   * @return Una promesa que se resuelve cuando el correo electrónico de restablecimiento de contraseña se envía correctamente
+   */
+  const onSubmit = async ({ email }: z.infer<typeof forgotPasswordSchema>) => {
     try {
-      const success = await sendPasswordResetEmail(values.email)
+      const success = await sendPasswordResetEmail(email)
       success && form.reset()
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
 

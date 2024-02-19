@@ -14,6 +14,10 @@ import { useState } from 'react'
 
 function NewChatModal() {
   const [isOpenModal, setIsOpenModal] = useState(false)
+
+  /**
+   * Cambia el estado de visibilidad del modal.
+   */
   const toggleModal = () => setIsOpenModal(!isOpenModal)
 
   return (

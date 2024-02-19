@@ -7,23 +7,26 @@ import { useAuthState } from 'react-firebase-hooks/auth'
 import { useCollectionOnce } from 'react-firebase-hooks/firestore'
 
 export interface ChatPageParams {
+  /** Identificador único para el chat */
   id: string
+  /** Propiedades adicionales indexadas por cadena que pueden incluirse */
   [key: string]: string
 }
 
 interface ChatPageProps {
+  /** Parámetros específicos de la página del chat, incluyendo el ID del chat */
   params: ChatPageParams
 }
 
 function ChatPage({ params }: ChatPageProps) {
   const [currentUser] = useAuthState(auth)
-  const [value, loading, error] = useCollectionOnce(
+  const [values, loading, error] = useCollectionOnce(
     query(
       collection(db, 'conversations'),
       and(where('id', '==', params.id), where('members', 'array-contains', currentUser?.uid))
     )
   )
-  const conversation = value?.docs.map((doc) => doc.data())[0]
+  const conversation = values?.docs.map((doc) => doc.data())[0]
 
   if (loading) return <ProcessLoader />
   if (error) return <div>{error.message}</div>

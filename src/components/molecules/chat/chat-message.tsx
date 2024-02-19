@@ -9,6 +9,7 @@ import { Timestamp } from 'firebase/firestore'
 import { useAuthState } from 'react-firebase-hooks/auth'
 
 interface ChatMessageProps {
+  /** Objeto que representa el mensaje en el chat */
   message: Message
 }
 
