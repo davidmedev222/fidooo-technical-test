@@ -1,108 +1,37 @@
-import { ChatMessage } from '@/components'
-
-const usuario1 = {
-  id: '1',
-  displayName: 'Max Leiter',
-  photoURL: 'https://github.com/shadcn.png',
-  email: 'maxleiter@gmail.com'
-}
-
-const usuario2 = {
-  id: '2',
-  displayName: 'John Doe',
-  photoURL: 'https://github.com/shadcn.png',
-  email: 'johndoe@gmail.com'
-}
-
-const messages = [
-  {
-    id: '1',
-    sender: usuario1,
-    text: '¡Hola! ¿Cómo estás?',
-    timestamp: '2022-01-01T10:15:00.000Z'
-  },
-  {
-    id: '2',
-    sender: usuario2,
-    text: '¡Hola! Estoy bien, gracias. ¿Y tú?',
-    timestamp: '2022-01-01T10:17:00.000Z'
-  },
-  {
-    id: '3',
-    sender: usuario1,
-    text: 'Estoy bastante bien también. ¿Has tenido un buen día?',
-    timestamp: '2022-01-01T10:20:00.000Z'
-  },
-  {
-    id: '4',
-    sender: usuario2,
-    text: '¡Genial!',
-    timestamp: '2022-01-01T10:22:00.000Z'
-  },
-  {
-    id: '5',
-    sender: usuario2,
-    text: 'Me alegra escuchar eso. ¿Tienes algún plan para el fin de semana?',
-    timestamp: '2022-01-01T10:25:00.000Z'
-  },
-  {
-    id: '6',
-    sender: usuario1,
-    text: 'Sí, tengo planeado descansar y ver algunas películas. ¿Tú?',
-    timestamp: '2022-01-01T10:28:00.000Z'
-  },
-  {
-    id: '7',
-    sender: usuario2,
-    text: 'Suena perfecto. Yo también estoy pensando en relajarme. Tal vez leer un buen libro.',
-    timestamp: '2022-01-01T10:30:00.000Z'
-  },
-  {
-    id: '8',
-    sender: usuario1,
-    text: 'Eso suena genial. ¿Tienes alguna recomendación de libro?',
-    timestamp: '2022-01-01T10:35:00.000Z'
-  },
-  {
-    id: '9',
-    sender: usuario2,
-    text: '¡Claro! Te recomendaría "El Alquimista" de Paulo Coelho. Es inspirador.',
-    timestamp: '2022-01-01T10:40:00.000Z'
-  },
-  {
-    id: '10',
-    sender: usuario1,
-    text: 'Gracias por la recomendación. Lo buscaré. ¿Algún otro consejo?',
-    timestamp: '2022-01-01T10:45:00.000Z'
-  },
-  {
-    id: '11',
-    sender: usuario2,
-    text: 'Podrías probar con "Cien años de soledad" de Gabriel García Márquez. Es un clásico.',
-    timestamp: '2022-01-01T10:50:00.000Z'
-  },
-  {
-    id: '12',
-    sender: usuario1,
-    text: 'Lo apunto. Gracias. ¡Espero que tengas un excelente fin de semana!',
-    timestamp: '2022-01-01T10:55:00.000Z'
-  },
-  {
-    id: '13',
-    sender: usuario2,
-    text: 'Gracias, ¡igualmente para ti! Hablamos luego.',
-    timestamp: '2022-01-01T11:00:00.000Z'
-  }
-]
+'use client'
+import { ChatPageParams } from '@/app/(app)/chats/[id]/page'
+import { ChatMessage, ChatMessageSkeleton } from '@/components'
+import { Message } from '@/models'
+import { db } from '@/services'
+import { and, collection, orderBy, query, where } from 'firebase/firestore'
+import { useParams } from 'next/navigation'
+import { useEffect, useRef } from 'react'
+import { useCollection } from 'react-firebase-hooks/firestore'
 
 function ChatMessageList() {
+  const scrollRef = useRef<HTMLSpanElement | null>(null)
+  const params = useParams<ChatPageParams>()
+  const [values, loading, error] = useCollection(
+    query(collection(db, 'messages'), and(where('conversationID', '==', params.id)), orderBy('timestamp', 'asc'))
+  )
+  const messages = values?.docs.map((doc) => doc.data()) as Message[]
+
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages])
+
+  if (loading) return <ChatMessageSkeleton numberOfMessages={10} />
+  if (error) return <p className='text-center text-gray-500'>{error.message}</p>
+
   return (
-    <ul className='grid gap-y-4 overflow-y-auto p-4'>
-      {messages.map((message) => (
+    <ul className='flex flex-col gap-y-4 overflow-y-auto p-4'>
+      {messages?.length === 0 && <p className='text-center text-gray-500'>No existen mensajes actualmente.</p>}
+      {messages?.map((message) => (
         <li key={message.id}>
           <ChatMessage message={message} />
         </li>
       ))}
+      <span ref={scrollRef} />
     </ul>
   )
 }
