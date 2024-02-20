@@ -1,0 +1,7 @@
+User-Agent: *
+Allow: /register
+Allow: /login
+Disallow: /
+Disallow: /chats/*
+
+Sitemap: https://fidooo-technical-test.vercel.app/sitemap.xml
