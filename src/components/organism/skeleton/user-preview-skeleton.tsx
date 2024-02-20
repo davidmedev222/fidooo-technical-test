@@ -11,7 +11,7 @@ function UserPreviewSkeleton({ numberOfUsers = 3 }: UserPreviewSkeletonProps) {
   const users = new Array(numberOfUsers).fill(0)
 
   return (
-    <div className='max-h-80 overflow-y-auto'>
+    <div className='overflow-y-auto'>
       {users.map((_, index) => (
         <div key={index} className='flex items-center gap-x-4 p-4'>
           <Skeleton className='size-10 rounded-full' />

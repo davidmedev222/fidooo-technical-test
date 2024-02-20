@@ -8,7 +8,7 @@ interface UserPreviewProps {
 
 function UserPreview({ user }: UserPreviewProps) {
   return (
-    <article className='flex items-center gap-4 p-4 transition-colors hover:bg-slate-100'>
+    <article className='flex w-full items-center gap-4 p-4 transition-colors hover:bg-slate-100'>
       <Avatar>
         <AvatarImage alt='Avatar del usuario' src={user.photoURL} />
         <AvatarFallback>AU</AvatarFallback>
